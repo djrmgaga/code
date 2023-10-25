@@ -1,0 +1,65 @@
+# customer ID 칼럼 삭제 (axis=1은 열 한개를 지우겠다는 뜻)
+
+df.drop('customerID', axis=1, inplace=True)
+
+df['TotalCharges'].replace([' '], ['0'], inplace=True)
+
+df['TotalCharges'] = df['TotalCharges'].astype(float)
+
+df['Churn'].replace(['Yes', 'No'], [1, 0], inplace=True)
+
+​
+
+# 범주형 칼럼에 대한 가변수 칼럼 생성 및 기존 칼럼 삭제 
+
+# *가변수란 남/녀와 같이 데이터 분석하기 어려운 내용들을 0/1과 같이 분석이 쉬운 형태(ex_원핫인코딩)로 변경된 것  
+
+cols = ['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 
+
+        'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 
+
+        'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 
+
+        'PaperlessBilling', 'PaymentMethod']
+
+​
+
+#가변수 데이터 프레임 생성
+
+dummies = pd.get_dummies(df[cols], drop_first=True)
+
+​
+
+#기존변수 칼럼 삭제
+
+df = df.drop(cols, axis=1)
+
+​
+
+#가변수 데이터프레임과 기존 데이터프레임 병합 
+
+df = pd.concat([df, dummies], axis=1)
+
+​
+
+​
+
+# row(행) 삭제
+
+df = df[df['dd'] != '-']
+
+​
+
+#이상치 삭제
+
+df_temp = df[df['dd'] < 300]
+
+​
+
+# 결측치 삭제
+
+print(df_temp.isnull().sum())
+
+df_na = df_temp.dropna()
+
+df_na.info()
