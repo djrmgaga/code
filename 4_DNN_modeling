@@ -1,0 +1,125 @@
+from tensorflow.keras.models import Sequential, load_model
+
+from tensorflow.keras.layers import Dense, Dropout
+
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+
+from tensorflow.keras.utils import to_categorical
+
+​
+
+# 하이퍼파라미터 설정 : batch_size, epochs
+
+batch_size = 1024
+
+epochs = 50
+
+​
+
+# 모델 입력(features) 갯수 확인
+
+X_train.shape
+
+​
+
+# 모델 출력(label) 갯수 확인
+
+y_train.shape
+
+​
+
+# sequential 모델 생성 (이진분류) 
+
+​
+
+model = Sequential()
+
+model.add(Dense(64, activation='relu', input_shape=(13,)))
+
+model.add(Dropout(0.2))
+
+model.add(Dense(32, activation='relu'))
+
+model.add(Dropout(0.2))
+
+model.add(Dense(16, activation='relu'))
+
+model.add(Dropout(0.2))
+
+model.add(Dense(1, activation='sigmoid'))
+
+​
+
+# 모델  컴파일 : optimizer, loss함수 설정
+
+model.compile(optimizer='adam', loss='binary_crossentropy',metrics=['acc'])
+
+​
+
+# callbacks 함수 설정 : EarlyStopping, ModelCheckpoint
+
+es = EarlyStopping(monitor='val_loss', patience=4, mode='min', verbose=1)
+
+mc = ModelCheckpoint('my_checkpoint.ckpt', monitor='val_loss', save_best_only=True, verbose=1)
+
+​
+
+# 모델 훈련 
+
+history = model.fit(X_train, y_train, 
+
+                    batch_size=batch_size, 
+
+                    epochs=epochs, 
+
+                    callbacks=[es, mc],
+
+                    validation_data=(X_test, y_test), 
+
+                    verbose=1)
+
+​
+
+# 다중분류 모델 
+
+​
+
+# y_train, y_test One-Hot-Encoding
+
+​
+
+y_train_ohe = to_categorical(y_train)
+
+y_test_ohe = to_categorical(y_test)
+
+​
+
+# sequential 모델 생성 
+
+model = Sequential()
+
+model.add(Dense(64, activation='relu', input_shape=(13,)))
+
+model.add(Dropout(0.2))
+
+model.add(Dense(32, activation='relu'))
+
+model.add(Dropout(0.2))
+
+model.add(Dense(16, activation='relu'))
+
+model.add(Dropout(0.2))
+
+model.add(Dense(2, activation='softmax'))
+
+​
+
+#모델 컴파일 : optimizer, loss함수 설정 
+
+model.compile(optimizer='adam', loss='categorical_crossentropy',metrics=['acc'])
+
+​
+
+#모델 훈련 
+
+history = model.fit(X_train, y_train_ohe, epochs=10, batch_size=32, validation_data=(X_test, y_test_ohe))
