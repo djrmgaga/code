@@ -1,0 +1,74 @@
+#Pd방식 레이블 인코딩
+
+df1["label_encoding"] = pd.factorize(df["airline"])[0].reshpae(-1,1) 
+
+df1.info()
+
+​
+
+# sk 방식 레이블 인코딩 
+
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+
+cat_cols = df1.select_dtypes(include='object')
+
+cat_cols
+
+​
+
+df1['cust_clas_itg_cd'] = le.fit_transform(df1['cust_clas_itg_cd'])
+
+df1['cont_sttus_itg_cd'] = le.fit_transform(df1['cont_sttus_itg_cd'])
+
+df1['cont_sttus_itg_cd'] = le.fit_transform(df1['cont_sttus_itg_cd'])
+
+df1['cont_sttus_itg_cd'] = le.fit_transform(df1['cont_sttus_itg_cd'])
+
+df1['trm_yn'] = le.fit_transform(df1['trm_yn'])
+
+​
+
+# for col in cat_cols:
+
+df1[col] = le.fit_transform(df1[col])
+
+df1[['cust_clas_itg_cd', 'cont_sttus_itg_cd', 'cust_dtl_ctg_itg_cd', 'trm_yn']].head()
+
+​
+
+df1.info()
+
+​
+
+# pd방식 원핫인코딩 
+
+​
+
+# df_del 데이터프레임에서 Address1 및 Address2 열을 원핫 인코딩
+
+df_del = pd.get_dummies(df_del, columns=['Address1', 'Address2'])
+
+​
+
+# sk방식 원핫인코딩
+
+from sklearn.preprocessing import OneHotEncoder 
+
+oh = OneHotEncoder()
+
+encoder = oh.fit_transform(df['class'].values.reshape(-1,1)).toarray()
+
+​
+
+df1_OneHot = pd.DataFrame(encoderer, colums=["class_"+str(oh.categories_[0][i])for i in range(len(oh.categories_[0]))])
+
+​
+
+​
+
+df1 = pd.concat([df, df_OneHot], axis=1)
+
+df1.head()
+[출처] 2-2. 범주형 데이터 정제화|작성자 kimyhemail
