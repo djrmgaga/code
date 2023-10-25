@@ -1,0 +1,159 @@
+# 데이터프레임 정보 확인
+
+df.info()
+
+​
+
+# 데이터프레임 인덱스 확인
+
+df.index
+
+​
+
+#  데이터프레임 컬럼 확인
+
+df.columns
+
+​
+
+# 데이터프레임  값(value) 확인
+
+df.values
+
+​
+
+# 데이터프레임의  계산 가능한 값들에 대한 통계치 확인
+
+df.describe()
+
+​
+
+# 널(null)값 확인
+
+df.isnull().sum()
+
+​
+
+# 불필요 데이터 삭제
+
+​
+
+df_del = df.drop(["A","B"], axis=1)
+
+​
+
+# voc_trt_perd_itg_cd 컬럼 데이터 확인
+
+df['voc_trt_perd_itg_cd']
+
+​
+
+# voc_trt_perd_itg_cd 컬럼 데이터별 건수 확인
+
+df['voc_trt_perd_itg_cd'].value_counts()
+
+df['voc_trt_perd_itg_cd'].value_counts(normalize=True)
+
+​
+
+# 모든 컬럼에 대한 데이터 분포 건수 확인
+
+[df[c].value_counts() for c in df]
+
+[df[c].value_counts(normalize=True) for c in df]   
+
+​
+
+# '_'  값이 50% 이상 차지하는 컬럼 삭제하고 df1 변수에 대입
+
+df1 = df.drop(columns=['voc_trt_perd_itg_cd',
+
+                       'voc_trt_reslt_itg_cd',
+
+                       'oos_cause_type_itg_cd',
+
+                       'engt_cperd_type_itg_cd',
+
+                       'engt_tgt_div_itg_cd',
+
+                       'fclt_oos_yn'
+
+                      ])
+
+​
+
+# df1 데이터프레임 정보 확인
+
+​
+
+df1.info()
+
+df1[df1['cust_clas_itg_cd'] == '_']
+
+​
+
+# 남아있는 '_'값을 null로 변경
+
+df1.replace('_',np.nan,inplace=True)
+
+df1.info()
+
+df1.isnull().sum()
+
+​
+
+#  Object 데이터타입의 Null값 처리
+
+df1.dtypes
+
+​
+
+# cust_clas_itg_cd : 최빈값(mode)으로 변경
+
+df1['cust_clas_itg_cd']
+
+df1['cust_clas_itg_cd'].value_counts()
+
+df1['cust_clas_itg_cd'].replace(np.nan, 'L', inplace=True)
+
+df1['cust_clas_itg_cd'].isnull().sum()
+
+df1.info()
+
+​
+
+# age_itg_cd : 중앙값(median)으로 변경하고 데이터 타입을 정수(int)로 변경
+
+df1['age_itg_cd']
+
+df1['age_itg_cd'].median()
+
+df1['age_itg_cd'].replace(np.nan, 48, inplace=True)
+
+df1['age_itg_cd'] = df1['age_itg_cd'].astype(int)
+
+df1['age_itg_cd'].isnull().sum()
+
+df1['age_itg_cd']
+
+df1.info()
+
+​
+
+# voc_mis_pbls_yn 컬럼의 경우 'N' 값이 99% 이상 차지하므로 삭제
+
+df1['voc_mis_pbls_yn'].value_counts()
+
+df1.drop(columns=['voc_mis_pbls_yn'], inplace=True)
+
+df1.info()
+
+​
+
+# 날짜(Date) 관련 컬럼 확인 및 삭제
+
+df1['new_date'][:3]
+
+df1.drop(columns=['new_date', 'opn_nfl_chg_date', 'cont_fns_pam_date'], inplace=True)
+
+df1.info()
