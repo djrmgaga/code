@@ -1,0 +1,68 @@
+from sklearn.preprocessing import MinMaxScaler
+
+​
+
+#voc_prod_sbt_id 데이터 정규화
+
+df1['voc_prod_sbt_id'].values
+
+scaler =  MinMaxScaler()
+
+​
+
+# df1['voc_prod_sbt_id'].values.reshape(-1,1)
+
+df1['voc_prod_sbt_id'] = scaler.fit_transform(df1['voc_prod_sbt_id'].values.reshape(-1,1))
+
+df1['voc_prod_sbt_id'].min(), df1['voc_prod_sbt_id'].max()
+
+​
+
+# 나머지 컬럼도 정규화 :  voc_prod_sbt_id, trm_yn 제외
+
+df1.columns.tolist()  
+
+column_list = ['voc_wjt_sorc_id',
+
+ 'voc_type_itg_cd',
+
+ 'voc_sttus_itg_cd',              
+
+ 'cust_clas_itg_cd',
+
+ 'bprod_sbt_id',
+
+ 'age_itg_cd',
+
+ 'cont_sttus_itg_cd',
+
+ 'cust_dtl_ctg_itg_cd',
+
+ 'voc_trt_degr_div_itg_cd',
+
+ 'voc_dupl_tmscnt',
+
+ 'voc_trt_need_time_itg_cd',
+
+ 'cust_snsry_base_conf_need_time']
+
+​
+
+for col in column_list:
+
+    print(col)
+
+    df1[col] = MinMaxScaler().fit_transform(df1[col].values.reshape(-1,1))
+
+    
+
+df1.head()
+
+​
+
+​
+
+2-4. 저장
+
+df1.to_csv('preprocessd_data.csv', index=False)
+[출처] 2-3. 정제화 및 2-4. 저장|작성자 kimyhemail
