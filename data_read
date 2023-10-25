@@ -1,0 +1,64 @@
+#라이브러리 설치
+
+!pip install pandas
+
+!pip install seaborn
+
+!pip install scikit-learn
+
+​
+
+#데이터분석/시각화 라이브러리 임포트
+
+import pandas as pd
+
+import numpy as np
+
+import seaborn as sns
+
+import matplotlib.pyplot as plt
+
+%matplotlib inline 
+
+import sklearn as sk
+
+​
+
+#AIDU 내부연동을 위한 라이브리러리 임포트
+
+from aicentro.session import Session
+
+from aicentro.framework.keras import Keras as AiduFrm
+
+aidu_session = Session(verify = False)
+
+aidu_framework = AiduFrm(session=aidu_session)
+
+​
+
+#keras 임포트
+
+import tensorflow as tf
+
+from tensorflow.keras.models import Sequential
+
+from tensorflow.keras.layers import Dense, Activation, Dropout
+
+​
+
+#데이터 열기
+
+df = pd.read_csv(aidu_framework.config.data_dir + '/churn_data.csv')
+
+df = pd.read_json('a.json')
+
+​
+
+#데이터셋 확인 / 모든 컬럼의 데이터 정보 확인
+
+df.head()
+
+df.info()
+
+df.describe()
+[출처] 1. 데이터 가져오기|작성자 kimyhemail
