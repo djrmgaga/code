@@ -1,0 +1,139 @@
+# Accuracy
+
+​
+
+plt.figure(figsize=(10,5))
+
+plt.plot(history.history['acc'])
+
+plt.plot(history.history['val_acc'])
+
+plt.title('Model Accuracy')
+
+plt.xlabel('Epochs')
+
+plt.ylabel('Accuracy')
+
+plt.legend(['Train','Validation'], loc='lower right')
+
+​
+
+#loss함수 
+
+​
+
+plt.figure(figsize=(10,5))
+
+plt.plot(history.history['loss'], 'b', label='Train Loss')
+
+plt.plot(history.history['val_loss'], 'y', label='validaton Loss')
+
+plt.xlabel('Epochs')
+
+plt.ylabel('Loss')
+
+plt.legend()
+
+​
+
+#predict
+
+​
+
+y_test_pred = model.predict(X_test, batch_size=batch_size, verbose=1)
+
+y_test = y_test_ohe
+
+​
+
+# Confusion Matrix API 형식에 맞게 예측
+
+# 실제 해지 여부 가공(argmax함수를 사용하여  확률값을 0 또는1 로 변환)
+
+​
+
+y_test_c = np.argmax(y_test_ohe, axis=1).reshape(-1,1)
+
+y_test_pred_c = np.argmax(y_test_pred, axis=1).reshape(-1,1)
+
+​
+
+​
+
+y_test_c.shape, y_test_pred_c.shape
+
+​
+
+# Confusion Matrix, ROC Curve 시각화에 표현될 라벨 이름
+
+label_name = ["no","yes"]
+
+​
+
+#Draw Confusion Matrix
+
+aidu_framework.plot_confusion_matrix(
+
+    y_true=y_test_c, # Label(Y) 의 정답 (numpy.array)
+
+    y_pred=y_test_pred_c, # Label(Y) 의 예측결과 (numpy.array)
+
+    target_names=label_name, # Label(Y) 의 이름 (array)
+
+    title='Confusion Matrix', # matplotlib 객체의 타이틀 (옵션)
+
+    cmap=None, # matplotlib 의 컬러맵 plt.get_cmap('Greys') ( 기본값 : None )
+
+    normalize=False # 결과 값 Normalize 여부 ( 기본값 : True )
+
+)
+
+​
+
+#Draw ROC Curve
+
+aidu_framework.plot_roc_curve(
+
+    y_true=y_test, # Label(Y) 의 정답 (numpy.array)
+
+    y_pred=y_test_pred, # Label(Y) 의 예측결과 (numpy.array)
+
+    n_classes=2, # Label(Y) 의 이름 갯수
+
+    target_names=label_name, # Label(Y) 의 이름 (array)
+
+    title='ROC Curve' # matplotlib 객체의 타이틀 (옵션)
+
+)
+
+​
+
+#Draw Classification Report
+
+aidu_framework.classification_report(
+
+    y_true= y_test_c, # Label(Y) 의 정답 (numpy.array)
+
+    y_pred=y_test_pred_c, # Label(Y) 의 예측결과 (numpy.array)
+
+    target_names= label_name# Label(Y) 의 이름 (array)
+
+)
+
+​
+
+#Graph Regulation
+
+plt.figure(figsize=(8, 6), dpi=150) # 화면 배치 기준 50%
+
+plt.savefig(
+
+    aidu_framework.get_plot_save_filename(), # 자동으로 순차적인 파일명을 리턴
+
+    dpi=150,
+
+    bbox_inches='tight',
+
+    pad_inches=0.5
+
+)
