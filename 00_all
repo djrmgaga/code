@@ -1,0 +1,429 @@
+
+
+
+
+Sklearn 
+
+---
+
+코드 사용하기
+
+import skleran as sk
+
+
+
+Pandas 
+
+---
+
+코드 사용하기
+
+import pandas as pd
+
+데이터 불러오기
+
+* 경로에 있는 파일을 불러와서 변수에 넣기
+
+# ex) iris = pd.read_csv('/iris.csv')
+
+#CSV 파일 읽어오기
+변수명 = pd.read_csv(
+                    위치경로,
+                    encoding='cp949',    #인코딩 필요하면 삽입
+                    sep = ';'            ##CSV에서 ,대신 ;로 자르는 데이터
+                    )
+
+#Json 파일 불러오기
+변수명 = pd.read_json(
+                    위치경로,
+                    encoding='cp949',    #인코딩 필요하면 삽입
+                    sep = ';'            ##CSV에서 ,대신 ;로 자르는 데이터
+                    )
+
+[확인] 데이터 모양 확인
+
+# 행수, 열수 확인
+# ex) iris.shape
+데이터명.shape
+
+
+[확인] 데이터 n개 확인
+
+* 변수에 있는 데이터 중 n개만 확인하기
+
+# 앞에 있는 데이터 확인
+# ex) iris.head(6) # 6개 행만 확인
+변수명.head(n)
+
+# 뒤에 있는 데이터 확인
+변수명.tail(n)
+
+[확인] 데이터 공백 확인
+
+# ex)
+# print("열 확인 \n", ade.isnull().any())
+# print("행 확인 \n",   ade[ade.isnull().any(axis=1)].index  ) 
+
+####################################################################
+
+#어디 특징에 공백 있는지 확인
+데이터명.isnull().any()
+#그 특징에서도 몇번쨰 행에 있는지 확인
+데이터명[데이터명.isnull().any(axis=1)].index
+
+
+
+
+
+[확인] 데이터 요소별 개수 확인
+
+* 특징에서 각 요소마다 개수 확인
+
+# 개수로 확인하기 
+# ex) df["variety"].value_counts()
+변수['특징명'].value_counts()
+
+#비율로 확인하기
+# ex) df["variety"].value_counts()
+변수['특징명'].value_counts(normalize=True)
+
+mceclip1.png
+
+mceclip2.png
+
+[추가] 새로운 특징 생성
+
+* 기존 특징을 활용하여 새로운 특징 생성하기
+
+#숫자 형식끼리만 연산 가능
+
+#더하기
+데이터명['신규특징명'] = 데이터명['기존특징1'] + 데이터명['기존특징2']
+#빼기
+데이터명['신규특징명'] = 데이터명['기존특징1'] - 데이터명['기존특징2']
+#빼고 절대값
+데이터명['신규특징명'] = abs(데이터명['기존특징1'] - 데이터명['기존특징2'])
+
+#곱하기
+데이터명['신규특징명'] = 데이터명['기존특징1'] * 데이터명['기존특징2']
+#나누기
+데이터명['신규특징명'] = 데이터명['기존특징1'] / 데이터명['기존특징2']
+
+[추가] 날짜에서 요일숫자 추출
+
+#date 컬럼을 이용하여 요일을 만드시오.
+# 요일은 dt.weekday를 활용해서 진행하시면 되며, 해당 진행시 integer로 encoding 됩니다.
+# ex)
+# ade['day'] = ade['Date'].dt.weekday # 월요일이 0이다.
+
+
+
+
+[삭제] 중복삭제
+
+* 중복된 행 데이터 삭제 
+
+# EX)
+# ade.drop_duplicates(inplace=True, ignore_index=True)
+
+#inplace : 값을 대치하고 바로 저장할건가? (True / False 로 기입)
+#ignore_index : 중복 제거하고 인덱스 초기화 할거야 ? (True / False 로 기입)
+
+데이터명.drop_duplicates(inplace=True, ignore_index=True)
+
+[수정] 날짜 타입 변경
+
+# ex)
+# ade['Date'] = pd.to_datetime(ade['Date'])
+
+데이터명['변수명'] = pd.to_datetime(데이터명['변수명'])
+
+
+
+
+
+시각화 하기
+
+---
+
+Bar Plot (막대그래프)
+
+* 막대그래프를 만드는 코드로 kind는 그래프의 종류를 넣기
+
+# value_counts() : 변수에 속한 요소 아이템수량 확인
+# ex) iris['variety'].value_counts().plot(kind='bar')
+
+변수명['특징명'].value_counts().plot(kind='bar')
+plt.show() #표시하기
+
+
+download.png
+
+히스토그램
+
+* 각 컬럼의 분포를 확인하는 그래프로 kind에 그래프 종류 넣기
+
+# ex) iris['sepal.length'].plot(kind='hist')
+# 구간을 설정하려면 bins 조건 추가
+
+# 일반적인 히스토그램
+변수명['특징명'].plot(kind='hist',
+                    bins = 숫자      #특정 구간을 줄인 방식의 히스토그램
+                    )
+
+plt.grid() #격자 표시 필요하면 사용
+plt.show() #표시하기
+
+image.png
+
+download.png
+
+산점도 (scatter)
+
+* x축과 Y축의 데이터를 흩뿌려서 확인
+
+# ex)
+# iris.plot(kind='scatter', x='sepal.width', y='petal.width')
+# plt.title('제목')
+# plt.show()
+
+변수명.plot(kind='scatter', x='X축으로할 특징', y='Y축으로할 특징')
+plt.title('제목')
+plt.show()
+
+download.png
+
+* 그룹별로 색 다르게하기
+
+# ex)
+# groups = iris.groupby('variety')
+# for name, group in groups :
+#     plt.scatter(x = 'sepal.length', y = 'petal.length', data=group, label=name)
+# plt.legend()
+# plt.show()
+
+그룹변수 = 데이터변수.groupby('그룹묶을특징')
+
+for 그룹요소, 그룹별데이터 in 그룹변수:
+  plt.scatter(x = 'x축 변수명', y = 'y축 변수명', data=그룹별데이터, label=그룹요소)
+
+plt.legend() #범례표시
+plt.show()
+
+download.png
+
+
+
+
+
+Matplotlib
+
+import matplotlib.pyplot as plt
+
+
+
+
+
+
+
+
+
+데이터 전처리
+
+---
+
+인코딩
+
+라벨인코딩
+
+* 문자를 고유한 숫자로 변환
+
+# ex)
+# from sklearn.preprocessing import LabelEncoder
+# lb = LabelEncoder()
+# iris['variety'] = lb.fit_transform(iris['variety'])
+
+# 패키지 import 
+from sklearn.preprocessing import LabelEncoder
+변수 = LabelEncoder()
+데이터명['인코딩할변수'] = 변수.fit_transform(데이터명['인코딩할변수'])
+
+
+원핫인코딩
+
+pd.get_dummies(iris['variety'])
+
+숫자형 처리
+
+표준화
+
+* 
+
+from sklearn.preprocessing import StandardScaler
+
+# ex)
+scaler=StandardScaler()
+wine[['density', 'pH']]=scaler.fit_transform(wine[['density', 'pH']])
+
+##############################################################
+
+스케일변수 = StandardScaler()
+데이터['변수명'] = 스케일변수.fit_transform(wine['변수명']
+
+
+
+학습데이터 분리 
+
+* X,Y로 쪼개기
+
+# ex)
+# x = iris.drop(['variety'], axis=1)
+# y = iris['variety']
+
+X데이터명 = 데이터명.drop(['Y특징명'],axis=1)
+y데이터명 = 데이터명['Y특징명']
+
+* 학습데이터와 테스트 데이터 분리
+
+from sklearn.model_selection import train_test_split
+
+#ex)
+# x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=2021, stratify = y)
+# x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=2021, stratify = ade['Location']) #만약 특정 피쳐를 기준으로 골고루 분할하고 싶을때
+
+# stratify : 트레인데이터, 테스트데이터에서 클래스가 골고루 분할되도록 할건지 ?
+# random_state : 랜덤에서도 고정되게 하기 위해 숫자 삽입 (문제에서 주어지면 넣고 아니면 제외)
+X트레인변수, Y테스트변수 , Y트레인변수, Y테스트변수 = train_test_split(X데이터, Y데이터, test_size=테스트데이터비율, random_state=고정숫자, stratify = y또는n)
+
+
+
+
+
+
+
+
+
+
+모델학습
+
+---
+
+머신러닝
+
+---
+
+랜덤포레스트
+
+# Ex)
+# from sklearn.ensemble import RandomForestClassifier
+# forest = RandomForestClassifier(n_estimators=50, max_depth=15, min_samples_leaf=5, random_state=2021)
+# forest.fit(x_train, y_train)
+# forest.fit(x_train, y_train)
+# forest.score(x_test, y_test)
+
+
+##############################################################################
+#import 영역
+from sklearn.ensemble import RandomForestClassifier 
+
+모델변수명= RandomForestClassifier(
+                                  n_estimators=50,    # 종합한 전체 트리의 가지수,
+                                  max_depth=15,       # 각 Tree의 가장 깊은 높이,
+                                  min_samples_leaf=5, # 각 끝의 노드
+                                  random_state=2021)  # 랜덤 고정값
+
+#학습 시작
+모델변수명.fit(x트레인데이터, y트레인데이터)
+#결과값 확인
+모델변수명.score(x테스트데이터, y테스트데이터)
+
+
+선형회귀
+
+from sklearn.linear_model import LinearRegression
+
+# ex)
+# line_fitter = LinearRegression()
+# line_fitter.fit(x_train, y_train)
+# y_pred=line_fitter.predict(x_test)
+
+
+
+모델변수명 = LinearRegression()
+모델변수.fit(X데이터명, y데이터명)
+Y예측변수 = 모델변수.predict(X테스트데이터)
+
+
+
+
+
+딥러닝
+
+* 핵심 코드 Import
+
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.layers import Input, Dense, BatchNormalization
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.callbacks import EarlyStopping
+
+* 딥러닝 모델
+
+keras.backend.clear_session()
+
+model = Sequential()
+model.add(Dense(36, activation='relu', input_shape=(6,)))
+model.add(BatchNormalization())
+model.add(Dense(36, activation='relu' ))
+model.add(BatchNormalization())
+model.add(Dense(12, activation='relu'))
+model.add(Dense(3, activation='softmax'))
+
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy']) 
+
+es = EarlyStopping(monitor='val_loss', min_delta=0, patience=5, verbose=1, restore_best_weights=True)
+
+history = model.fit(x_train, y_train, epochs=2000, batch_size=32,
+                    verbose=1,validation_data=(x_test, y_test),callbacks=[es])
+
+
+
+결과 확인
+
+변수영향도
+
+plt.barh(y=특징명리스트, width=모델명.feature_importances_)
+plt.grid()
+plt.show()
+
+################################################################
+# ex)
+plt.barh(y=col_names, width=best_tree.feature_importances_)
+plt.grid()
+plt.show()
+
+
+download.png
+
+평가지표
+
+from sklearn.metrics import mean_absolute_error as MAE
+
+mae = MAE(y_test, y_pred)
+print(mae)
+
+정확도 그래프
+
+import matplotlib.pyplot as plt
+
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Accuracy')
+plt.xlabel('epochs')
+plt.ylabel('accuracy')
+plt.legend(['train_acc', 'val_acc'])
+plt.show()
+
+
